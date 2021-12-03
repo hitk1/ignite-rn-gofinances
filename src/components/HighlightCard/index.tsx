@@ -30,13 +30,9 @@ export const HighlightCard = ({
     type
 }: IProps) => {
     return (
-        <Container
-            type={type}
-        >
+        <Container type={type}>
             <Header>
-                <Title
-                    type={type}
-                >{title}</Title>
+                <Title type={type}>{title}</Title>
                 <Icon
                     name={icon[type]}
                     type={type}
@@ -44,12 +40,8 @@ export const HighlightCard = ({
             </Header>
 
             <Footer>
-                <Amount
-                    type={type}
-                >{amount}</Amount>
-                <LastTransaction
-                    type={type}
-                >{lastTransaction}</LastTransaction>
+                <Amount type={type}>{amount}</Amount>
+                <LastTransaction type={type}>{lastTransaction}</LastTransaction>
             </Footer>
         </Container>
     )
