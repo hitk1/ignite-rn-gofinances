@@ -10,6 +10,7 @@ import {
 //instalação das fonts ->  expo install expo-font @expo-google-fonts/${specificFont}
 
 import { Dashboard } from './src/screens/Dashboard';
+import { Register } from './src/screens/Register';
 
 import theme from './src/global/styles/theme'
 
@@ -26,7 +27,8 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Dashboard />
+      {/* <Dashboard /> */}
+      <Register />
     </ThemeProvider>
   )
 }
