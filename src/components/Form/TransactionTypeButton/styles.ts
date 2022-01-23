@@ -27,11 +27,11 @@ export const Container = styled(TouchableOpacity) <ContainerProps>`
     `}
 
     ${({ isActive, type }) => isActive && type === 'down' && css`
-        background-color: ${({ theme }) => theme.colors.attention_light}
+        background-color: ${({ theme }) => theme.colors.attention_light};
     `}
 
     ${({ isActive, type }) => isActive && type === 'up' && css`
-        background-color: ${({ theme }) => theme.colors.success_light}
+        background-color: ${({ theme }) => theme.colors.success_light};
     `}
 
 `
@@ -42,7 +42,7 @@ export const Icon = styled(Feather) <IconProps>`
         type === 'up'
             ? theme.colors.success
             : theme.colors.attention
-    }
+    };
 `;
 
 export const Title = styled.Text`
