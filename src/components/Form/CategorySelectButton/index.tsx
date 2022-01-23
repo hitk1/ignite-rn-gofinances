@@ -8,11 +8,12 @@ import {
 
 interface IProps {
     title: string
+    onPress: () => void
 }
 
-export const CategorySelect = ({ title }: IProps) => {
+export const CategorySelectButton = ({ title, onPress }: IProps) => {
     return (
-        <Container>
+        <Container onPress={onPress}>
             <Category>{title}</Category>
 
             <Icon name="chevron-down" />
