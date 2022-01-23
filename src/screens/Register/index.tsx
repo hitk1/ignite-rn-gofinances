@@ -5,7 +5,7 @@ import {
     TouchableWithoutFeedback,
     Alert
 } from 'react-native'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -58,14 +58,12 @@ export const Register = () => {
     const handleCloseSelectCategory = () => setCategoryModalOpen(false)
     const handleOpenSelectCategoryModal = () => setCategoryModalOpen(true)
 
-    const handleRegister = (form: IFormData) => {
+    const handleRegister: SubmitHandler<IFormData> = async (form) => {
         if (!transactionType)
             return Alert.alert("Selecione o tipo da transação")
 
         if (category.key === 'category')
             return Alert.alert("Selecione a categoria")
-
-
 
     }
 
@@ -117,7 +115,7 @@ export const Register = () => {
 
                     <Button
                         title="Enviar"
-                        onPress={handleSubmit(handleRegister)}
+                        onPress={handleSubmit(handleRegister as any)}
                     />
                 </Form>
 
