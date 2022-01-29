@@ -15,7 +15,9 @@ interface IProps extends RectButtonProps {
 
 export const SignInSocialButton = ({ title, svg: Svg, ...restProps }: IProps) => {
     return (
-        <Button>
+        <Button
+            {...restProps}
+        >
             <ImageContainer>
                 <Svg />
             </ImageContainer>

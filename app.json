@@ -2,7 +2,16 @@
   "expo": {
     "name": "gofinances",
     "slug": "gofinances",
+    "scheme": "gofinances",
     "version": "1.0.0",
+    "ios": {
+      "bundleIdentifier": "com.hitk1.gofinances",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.hitk1.gofinances",
+      "versionCode": 1
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
