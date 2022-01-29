@@ -13,6 +13,8 @@ import {
 import { AppRoutes } from './src/routes/app.routes'
 import theme from './src/global/styles/theme'
 
+import { SignIn } from './src/screens/SignIn'
+
 export default function App() {
   const [isFontsLoaded] = useFonts({
     Poppins_400Regular,
@@ -27,7 +29,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
-        <AppRoutes />
+        <SignIn />
       </NavigationContainer>
     </ThemeProvider>
   )
