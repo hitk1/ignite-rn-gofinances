@@ -1,5 +1,8 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react'
 import *  as AuthSession from 'expo-auth-session'
+const { CLIENT_ID } = process.env
+const { REDIRECT_URL } = process.env
+
 
 interface IAuthProviderProps {
     children: ReactNode
@@ -31,12 +34,11 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 
     const signInWithGoogle = async () => {
         try {
-            const CLIENT_ID = '655525669850-ip3otd11hhabl36imgp5oviofk3t2j16.apps.googleusercontent.com'
-            const REDIRECT_URI = 'https://auth.expo.io/@hitk1/gofinances'
             const RESPONSE_TYPE = 'token'
             const SCOPE = encodeURI('profile email')
+            console.log(CLIENT_ID, REDIRECT_URL)
 
-            const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`
+            const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`
 
             const { params, type } = await AuthSession.startAsync({ authUrl }) as IAuthorizationResponse
 
@@ -50,6 +52,8 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
                     name: userInfo.given_name,
                     photo: userInfo.picture
                 })
+
+                console.log(userInfo)
             }
         } catch (error) {
             throw new Error(error as any)
