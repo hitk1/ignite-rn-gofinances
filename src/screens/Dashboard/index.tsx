@@ -2,6 +2,7 @@ import React from 'react'
 import { FlatList } from 'react-native'
 import { HighlightCard } from '../../components/HighlightCard'
 import { TransactionCard, CardProps } from '../../components/TransactionCard'
+import { useAuth } from '../../hooks/auth'
 
 import {
     Container,
@@ -12,6 +13,7 @@ import {
     User,
     UserGreeting,
     UserName,
+    LogoutButton,
     Icon,
     HighlightCardList,
     Transactions,
@@ -24,6 +26,12 @@ export interface DataProps extends CardProps {
 }
 
 export const Dashboard = () => {
+    const { signOut, user } = useAuth()
+
+    const handleSignOut = async () => {
+        await signOut()
+    }
+
     const transactions: DataProps[] = [
         {
             id: '1',
@@ -81,10 +89,14 @@ export const Dashboard = () => {
                         />
                         <User>
                             <UserGreeting>Olá</UserGreeting>
-                            <UserName>Luis Paulo</UserName>
+                            <UserName>{user.name}</UserName>
                         </User>
                     </UserInfo>
-                    <Icon name="power" />
+                    <LogoutButton
+                        onPress={handleSignOut}
+                    >
+                        <Icon name="power" />
+                    </LogoutButton>
                 </UserWrapper>
 
             </Header>

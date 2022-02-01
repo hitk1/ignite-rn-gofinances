@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useContext, useState } from 'react'
+import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import *  as AuthSession from 'expo-auth-session'
 import * as AppleAuthentication from 'expo-apple-authentication'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -18,9 +18,11 @@ interface IUser {
 }
 
 interface IAuthContextData {
-    user: IUser,
+    user: IUser
+    userStorageLoading: boolean
     signInWithGoogle: () => Promise<void>
     signInWithApple: () => Promise<void>
+    signOut: () => Promise<void>
 }
 
 interface IAuthorizationResponse {
@@ -34,6 +36,7 @@ export const AuthContext = createContext({} as IAuthContextData)
 
 const AuthProvider = ({ children }: IAuthProviderProps) => {
     const [user, setUser] = useState<IUser>({} as IUser)
+    const [userStorageLoading, setUserStorageLoading] = useState(true)
 
     const signInWithGoogle = async () => {
         try {
@@ -87,11 +90,30 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
         }
     }
 
+    const signOut = async () => {
+        setUser({} as IUser)
+        await AsyncStorage.removeItem('@gofinances:user')
+    }
+
+    useEffect(() => {
+        (async () => {
+            const userLogged = await AsyncStorage.getItem('@gofinances:user')
+
+            if (userLogged) {
+                const parsedUser = JSON.parse(userLogged)
+                setUser(parsedUser)
+            }
+            setUserStorageLoading(false)
+        })()
+    }, [])
+
     return (
         <AuthContext.Provider value={{
             user,
+            userStorageLoading,
             signInWithGoogle,
-            signInWithApple
+            signInWithApple,
+            signOut
         }}>
             {children}
         </AuthContext.Provider>

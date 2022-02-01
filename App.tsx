@@ -10,13 +10,12 @@ import {
 } from '@expo-google-fonts/poppins'
 //instalação das fonts ->  expo install expo-font @expo-google-fonts/${specificFont}
 
-import { AppRoutes } from './src/routes/app.routes'
 import theme from './src/global/styles/theme'
-
-import { SignIn } from './src/screens/SignIn'
 import { AuthProvider } from './src/hooks/auth'
+import { Routes } from './src/routes';
 
 export default function App() {
+
   const [isFontsLoaded] = useFonts({
     Poppins_400Regular,
     Poppins_500Medium,
@@ -29,11 +28,9 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <NavigationContainer>
-        <AuthProvider>
-          <SignIn />
-        </AuthProvider>
-      </NavigationContainer>
+      <AuthProvider>
+        <Routes />
+      </AuthProvider>
     </ThemeProvider>
   )
 }
