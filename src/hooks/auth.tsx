@@ -1,5 +1,7 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react'
 import *  as AuthSession from 'expo-auth-session'
+import * as AppleAuthentication from 'expo-apple-authentication'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 const { CLIENT_ID } = process.env
 const { REDIRECT_URL } = process.env
 
@@ -18,6 +20,7 @@ interface IUser {
 interface IAuthContextData {
     user: IUser,
     signInWithGoogle: () => Promise<void>
+    signInWithApple: () => Promise<void>
 }
 
 interface IAuthorizationResponse {
@@ -36,7 +39,6 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
         try {
             const RESPONSE_TYPE = 'token'
             const SCOPE = encodeURI('profile email')
-            console.log(CLIENT_ID, REDIRECT_URL)
 
             const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`
 
@@ -52,11 +54,34 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
                     name: userInfo.given_name,
                     photo: userInfo.picture
                 })
-
-                console.log(userInfo)
             }
         } catch (error) {
             throw new Error(error as any)
+        }
+    }
+
+    const signInWithApple = async () => {
+        try {
+            const credential = await AppleAuthentication.signInAsync({
+                requestedScopes: [
+                    AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                    AppleAuthentication.AppleAuthenticationScope.EMAIL,
+                ]
+            })
+
+            if (credential) {
+                const userLogged = {
+                    id: String(credential.user),
+                    email: credential.email!,
+                    name: credential.fullName!.givenName!,
+                    photo: undefined
+                }
+
+                setUser(userLogged)
+                await AsyncStorage.setItem('@gofinances:user', JSON.stringify(userLogged))
+            }
+        } catch (error) {
+            throw new Error((error as any).message)
         }
     }
 
@@ -64,6 +89,7 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
         <AuthContext.Provider value={{
             user,
             signInWithGoogle,
+            signInWithApple
         }}>
             {children}
         </AuthContext.Provider>
